@@ -22,11 +22,29 @@ async function run() {
 
     const database = client.db('oculus_shop')
     const glassCollection = database.collection('products')
+    const usersCollection = database.collection('users')
+    const ordersCollection = database.collection('orders')
     
     app.get('/products', async (req, res) => {
       const cursor = glassCollection.find({})
       const products = await cursor.toArray()
       res.send(products)
+    })
+
+    //save user 
+    app.post('/users', async (req, res) => {
+      const user = req.body
+      console.log(user);
+      const result = await usersCollection.insertOne(user)
+      res.json(result)
+    })
+
+    // order api
+    app.post('/orders', async(req, res) => {
+      const orders = req.body
+      console.log(orders);
+      const result = await ordersCollection.insertOne(orders)
+      res.json(result)
     })
     
   } finally {
