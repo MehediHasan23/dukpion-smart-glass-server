@@ -33,10 +33,17 @@ async function run() {
       res.send(products);
     });
 
+    //add products
+    app.post('/products', async (req, res) => {
+      const cursor = req.body
+      const result = await glassCollection.insertOne(cursor)
+      console.log(result);
+      res.json(result)
+    })
     //save user
     app.post("/users", async (req, res) => {
       const user = req.body;
-      console.log(user);
+      // console.log(user);
       const result = await usersCollection.insertOne(user);
       res.json(result);
     });
@@ -101,6 +108,7 @@ async function run() {
       const filter = { email: user.email };
       const updateDoc = { $set: { role: "admin" } };
       const result = await usersCollection.updateOne(filter, updateDoc);
+      console.log(result);
       res.send(result);
     });
 
